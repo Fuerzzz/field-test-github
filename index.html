@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#2563eb" />
+  <link rel="manifest" href="manifest.json" />
+  <title>外场测试记录 App</title>
+  <style>
+    :root{--bg:#f5f7fb;--card:#fff;--text:#111827;--muted:#6b7280;--line:#e5e7eb;--blue:#2563eb;--red:#dc2626;--green:#16a34a;--orange:#ea580c}
+    *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text);font-size:15px}header{position:sticky;top:0;z-index:10;background:var(--card);border-bottom:1px solid var(--line);padding:14px 16px}h1{margin:0;font-size:18px}.sub{margin-top:4px;color:var(--muted);font-size:12px}main{padding:12px;max-width:760px;margin:0 auto 110px}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 2px rgba(0,0,0,.04)}.card-title{font-weight:700;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}label{display:block;font-weight:600;margin:12px 0 6px}input,select,textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 11px;font-size:15px;background:#fff;color:var(--text)}textarea{min-height:78px;resize:vertical}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.btn-row{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(255,255,255,.96);border-top:1px solid var(--line);padding:10px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}button{border:0;border-radius:10px;padding:11px 10px;font-size:14px;font-weight:700;color:#fff;background:var(--blue)}button.secondary{background:#4b5563}button.danger{background:var(--red)}button.success{background:var(--green)}button.orange{background:var(--orange)}.small-btn{padding:8px 9px;font-size:12px;border-radius:8px}.hint{color:var(--muted);font-size:12px;line-height:1.5}.preview{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;white-space:pre-wrap;background:#111827;color:#e5e7eb;border-radius:10px;padding:10px;max-height:220px;overflow:auto}.pill{display:inline-block;font-size:12px;padding:3px 8px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-weight:700}.rate-pass{color:var(--green);font-weight:700}.rate-fail{color:var(--red);font-weight:700}.photo-list{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}.photo-list img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;border:1px solid var(--line)}@media(max-width:520px){.grid,.grid3{grid-template-columns:1fr}.btn-row{grid-template-columns:1fr 1fr}.photo-list{grid-template-columns:repeat(2,1fr)}}
+  </style>
+</head>
+<body>
+<header><h1>外场测试记录 App</h1><div class="sub">GitHub Pages版 · GPS定位 · 拍照 · 本地保存 · CSV导出</div></header>
+<main>
+<form id="testForm">
+<section class="card"><div class="card-title"><span>基础信息</span><span class="pill" id="recordCount">0 条记录</span></div>
+<div class="grid"><div><label>编号</label><input name="编号" id="seq" placeholder="自动生成或手填" /></div><div><label>测试日期</label><input name="测试日期" id="testDate" type="date" /></div></div>
+<label>测试地点</label><textarea name="测试地点" placeholder="例如：道里区-哈尔滨太平国际机场（正北方向约30m处有基站干扰）"></textarea>
+<div class="grid"><div><label>测试环境</label><select name="测试环境"><option value="">请选择</option><option>开阔区域</option><option>基站干扰</option><option>机场</option><option>室外道路</option><option>其他</option></select></div><div><label>测试项</label><select name="测试项"><option>外置天线对星测试</option><option>内置天线对星测试</option><option>外置天线竖直测试</option><option>天线竖直稳定性测试</option><option>通话移动稳定性测试</option><option>基站干扰场景测试（外置天线）</option><option>基站干扰场景测试（内置天线）</option><option>主叫接通率测试（外置天线）</option><option>主叫接通率测试（内置天线）</option><option>被叫接通率测试（外置天线）</option><option>被叫接通率测试（内置天线）</option></select></div></div>
+</section>
+<section class="card"><div class="card-title">定位信息</div>
+<div class="grid3"><div><label>纬度</label><input name="纬度" id="lat" readonly /></div><div><label>经度</label><input name="经度" id="lng" readonly /></div><div><label>定位精度/米</label><input name="定位精度" id="accuracy" readonly /></div></div>
+<label>定位时间</label><input name="定位时间" id="geoTime" readonly />
+<div class="grid"><button type="button" class="orange" onclick="getLocation()">获取当前位置</button><button type="button" class="secondary" onclick="openMap()">打开地图查看</button></div>
+<p class="hint" id="geoStatus">提示：GitHub Pages 是 HTTPS，可以正常申请定位权限。</p>
+</section>
+<section class="card"><div class="card-title">设备与入网</div>
+<div class="grid"><div><label>设备</label><select name="设备"><option>JFP1309-158</option><option>JFP1309-735</option><option>JFP1310</option><option>JFP1632</option><option>乐众对比机</option><option>其他</option></select></div><div><label>天线</label><select name="天线"><option>外置天线</option><option>内置天线</option></select></div></div>
+<div class="grid3"><div><label>入网</label><select name="入网"><option>PASS</option><option>FAIL</option><option>未测</option></select></div><div><label>入网频点</label><input name="入网频点" inputmode="numeric" placeholder="923" /></div><div><label>对星方向</label><input name="对星方向" placeholder="206°西南" /></div></div>
+</section>
+<section class="card"><div class="card-title">信号记录</div><label>信号强度</label><input name="信号强度" placeholder="-115 [-117 ~ -115]" /><label>信噪比</label><input name="信噪比" placeholder="67 [57 ~ 131]" /><label>信号稳定性</label><select name="信号稳定性"><option>稳定</option><option>波动</option><option>很差</option><option>无法测试</option></select><label>信号稳定性说明</label><textarea name="信号稳定性说明" placeholder="例如：天线竖直放置且背对西北和正北方向时信号很差"></textarea></section>
+<section class="card"><div class="card-title">通话与移动测试</div><div class="grid"><div><label>天通通话</label><select name="天通通话"><option>PASS</option><option>FAIL</option><option>未测</option></select></div><div><label>通话清晰度</label><select name="天通通话清晰度"><option>清晰无卡顿</option><option>卡顿</option><option>杂音明显</option><option>断续</option><option>掉话</option><option>未测</option></select></div></div><label>通话中转身</label><textarea name="通话中转身" placeholder="记录转到不同方向时的信号和通话表现"></textarea><label>通话中移动 5 米</label><textarea name="通话中移动5米" placeholder="记录移动过程中的通话质量"></textarea></section>
+<section class="card"><div class="card-title">接通率统计</div><div class="grid"><div><label>接听成功次数</label><input name="接听成功次数" id="incomingSuccess" inputmode="numeric" placeholder="10" /></div><div><label>接听总次数</label><input name="接听总次数" id="incomingTotal" inputmode="numeric" placeholder="10" /></div></div><div class="grid"><div><label>呼通成功次数</label><input name="呼通成功次数" id="outgoingSuccess" inputmode="numeric" placeholder="10" /></div><div><label>呼通总次数</label><input name="呼通总次数" id="outgoingTotal" inputmode="numeric" placeholder="10" /></div></div><p class="hint">接听率：<span id="incomingRate">—</span>　呼通率：<span id="outgoingRate">—</span></p></section>
+<section class="card"><div class="card-title">拍照 / 视频 / 备注</div>
+<label>调用相机拍照</label><input name="拍照文件名" id="cameraInput" type="file" accept="image/*" capture="environment" multiple />
+<div id="photoPreview" class="photo-list"></div>
+<label>选择视频 / 其他照片</label><input name="附件文件名" id="fileInput" type="file" accept="image/*,video/*" multiple />
+<p class="hint">基础版：照片只本机预览，不上传服务器；CSV 中保存文件名。</p>
+<label>备注</label><textarea name="备注" placeholder="例如：一直处于搜网状态，不入网；切换听筒接近时熄屏等"></textarea></section>
+<section class="card"><div class="card-title"><span>Debug 数据预览</span><button type="button" class="small-btn secondary" onclick="toggleDebug()">显示/隐藏</button></div><div id="debugBox" class="preview" style="display:none;"></div></section>
+</form>
+</main>
+<div class="btn-row"><button type="button" class="success" onclick="saveRecord()">保存记录</button><button type="button" onclick="exportCSV()">导出 CSV</button><button type="button" class="secondary" onclick="newRecord()">新建/清空</button><button type="button" class="danger" onclick="clearAll()">清空全部</button></div>
+<script>
+const STORAGE_KEY="field_test_app_records_github_v1";
+function today(){return new Date().toISOString().slice(0,10)}
+function getRecords(){return JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]")}
+function setRecords(records){localStorage.setItem(STORAGE_KEY,JSON.stringify(records));updateCount()}
+function formToObject(){const form=document.getElementById("testForm");const data={};new FormData(form).forEach((value,key)=>{if(value instanceof File)return;data[key]=value});data["拍照文件名"]=Array.from(document.getElementById("cameraInput").files||[]).map(f=>f.name).join("; ");data["附件文件名"]=Array.from(document.getElementById("fileInput").files||[]).map(f=>f.name).join("; ");data["接听率（10次）"]=calcRateValue("incomingSuccess","incomingTotal");data["呼通率（10次）"]=calcRateValue("outgoingSuccess","outgoingTotal");data["保存时间"]=new Date().toLocaleString();return data}
+function saveRecord(){const data=formToObject();const records=getRecords();if(!data["编号"]){data["编号"]=String(records.length+1);document.getElementById("seq").value=data["编号"]}records.push(data);setRecords(records);updateDebug();alert("已保存 1 条记录。当前共 "+records.length+" 条。")}
+function newRecord(){document.getElementById("testForm").reset();document.getElementById("testDate").value=today();document.getElementById("seq").value=getRecords().length+1;document.getElementById("photoPreview").innerHTML="";document.getElementById("geoStatus").textContent="提示：GitHub Pages 是 HTTPS，可以正常申请定位权限。";updateRates();updateDebug()}
+function clearAll(){if(!confirm("确定清空本机保存的全部测试记录？"))return;localStorage.removeItem(STORAGE_KEY);newRecord();updateCount();alert("已清空。")}
+function calcRate(success,total){success=Number(success);total=Number(total);if(!total||total<=0||isNaN(success)||isNaN(total))return "";return ((success/total)*100).toFixed(0)+"%"}
+function calcRateValue(successId,totalId){return calcRate(document.getElementById(successId).value,document.getElementById(totalId).value)}
+function updateRates(){const incoming=calcRateValue("incomingSuccess","incomingTotal");const outgoing=calcRateValue("outgoingSuccess","outgoingTotal");setRateText("incomingRate",incoming);setRateText("outgoingRate",outgoing);updateDebug()}
+function setRateText(id,value){const el=document.getElementById(id);el.textContent=value||"—";el.className="";if(!value)return;const n=Number(value.replace("%",""));el.className=n>=98?"rate-pass":"rate-fail"}
+function updateCount(){document.getElementById("recordCount").textContent=getRecords().length+" 条记录"}
+function updateDebug(){const box=document.getElementById("debugBox");box.textContent=JSON.stringify(formToObject(),null,2)}
+function toggleDebug(){const box=document.getElementById("debugBox");box.style.display=box.style.display==="none"?"block":"none";updateDebug()}
+function getLocation(){const status=document.getElementById("geoStatus");if(!navigator.geolocation){status.textContent="当前浏览器不支持定位。";return}status.textContent="正在定位，请稍等……";navigator.geolocation.getCurrentPosition(pos=>{const c=pos.coords;document.getElementById("lat").value=c.latitude.toFixed(6);document.getElementById("lng").value=c.longitude.toFixed(6);document.getElementById("accuracy").value=Math.round(c.accuracy);document.getElementById("geoTime").value=new Date(pos.timestamp).toLocaleString();status.textContent="定位成功。精度约 "+Math.round(c.accuracy)+" 米。";updateDebug()},err=>{let msg="定位失败：";if(err.code===1)msg+="用户拒绝授权或浏览器权限被禁用";else if(err.code===2)msg+="无法获取位置";else if(err.code===3)msg+="定位超时";else msg+=err.message;status.textContent=msg},{enableHighAccuracy:true,timeout:15000,maximumAge:0})}
+function openMap(){const lat=document.getElementById("lat").value,lng=document.getElementById("lng").value;if(!lat||!lng){alert("请先获取当前位置。");return}window.open("https://maps.google.com/?q="+lat+","+lng,"_blank")}
+function previewPhotos(){const box=document.getElementById("photoPreview");box.innerHTML="";Array.from(document.getElementById("cameraInput").files||[]).forEach(file=>{const img=document.createElement("img");img.src=URL.createObjectURL(file);img.onload=()=>URL.revokeObjectURL(img.src);box.appendChild(img)});updateDebug()}
+function exportCSV(){const records=getRecords();if(!records.length){alert("暂无记录，先保存至少 1 条。");return}const headers=Array.from(new Set(records.flatMap(row=>Object.keys(row))));const csvRows=[headers.join(","),...records.map(row=>headers.map(h=>csvEscape(row[h]||"")).join(","))];const blob=new Blob(["\ufeff"+csvRows.join("\n")],{type:"text/csv;charset=utf-8;"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="外场测试记录_"+new Date().toISOString().slice(0,10)+".csv";a.click();URL.revokeObjectURL(url)}
+function csvEscape(value){value=String(value).replace(/"/g,'""');return '"'+value+'"'}
+document.addEventListener("input",updateRates);document.addEventListener("change",updateRates);document.getElementById("cameraInput").addEventListener("change",previewPhotos);
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}
+window.onload=function(){document.getElementById("testDate").value=today();document.getElementById("seq").value=getRecords().length+1;updateCount();updateRates()};
+</script>
+</body></html>
